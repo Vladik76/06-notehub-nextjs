@@ -11,11 +11,7 @@ import Modal from '@/components/Modal/Modal';
 import css from './Notes.module.css';
 import Pagination from '@/components/Pagination/Pagination';
 
-type Props = {
-  initialNotes: FetchNotesResponse;
-};
-
-export default function NotesClient({ initialNotes }: Props) {
+export default function NotesClient() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -35,8 +31,7 @@ export default function NotesClient({ initialNotes }: Props) {
     queryKey: ['notes', page, debouncedSearch],
     queryFn: () => fetchNotes({ page, perPage: 12, search: debouncedSearch }),
     placeholderData: keepPreviousData,
-    initialData:
-      page === 1 && debouncedSearch === '' ? initialNotes : undefined,
+    refetchOnMount: false,
   });
 
   if (isLoading) return <p>Loading, please wait...</p>;
